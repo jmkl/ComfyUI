@@ -543,8 +543,8 @@ class LoraLoader:
         return {"required": { "model": ("MODEL",),
                               "clip": ("CLIP", ),
                               "lora_name": (folder_paths.get_filename_list("loras"), ),
-                              "strength_model": ("FLOAT", {"default": 1.0, "min": -10.0, "max": 10.0, "step": 0.01}),
-                              "strength_clip": ("FLOAT", {"default": 1.0, "min": -10.0, "max": 10.0, "step": 0.01}),
+                              "strength_model": ("FLOAT", {"default": 1.0, "min": -20.0, "max": 20.0, "step": 0.01}),
+                              "strength_clip": ("FLOAT", {"default": 1.0, "min": -20.0, "max": 20.0, "step": 0.01}),
                               }}
     RETURN_TYPES = ("MODEL", "CLIP")
     FUNCTION = "load_lora"
@@ -1423,7 +1423,7 @@ class LoadImageMask:
         return True
 
 class ImageScale:
-    upscale_methods = ["nearest-exact", "bilinear", "area", "bicubic"]
+    upscale_methods = ["nearest-exact", "bilinear", "area", "bicubic", "lanczos"]
     crop_methods = ["disabled", "center"]
 
     @classmethod
@@ -1444,7 +1444,7 @@ class ImageScale:
         return (s,)
 
 class ImageScaleBy:
-    upscale_methods = ["nearest-exact", "bilinear", "area", "bicubic"]
+    upscale_methods = ["nearest-exact", "bilinear", "area", "bicubic", "lanczos"]
 
     @classmethod
     def INPUT_TYPES(s):
@@ -1772,6 +1772,7 @@ def load_custom_nodes():
         print()
 
 def init_custom_nodes():
+    load_custom_node(os.path.join(os.path.join(os.path.dirname(os.path.realpath(__file__)), "comfy_extras"), "nodes_latent.py"))
     load_custom_node(os.path.join(os.path.join(os.path.dirname(os.path.realpath(__file__)), "comfy_extras"), "nodes_hypernetwork.py"))
     load_custom_node(os.path.join(os.path.join(os.path.dirname(os.path.realpath(__file__)), "comfy_extras"), "nodes_upscale_model.py"))
     load_custom_node(os.path.join(os.path.join(os.path.dirname(os.path.realpath(__file__)), "comfy_extras"), "nodes_post_processing.py"))
